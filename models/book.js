@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Book = sequelize.define('Book', {
     title: DataTypes.STRING,
-    author: DataTypes.STRING,
+    author: DataTypes.ARRAY(DataTypes.STRING),
     pages: DataTypes.INTEGER,
     language: DataTypes.STRING
   }, {});
