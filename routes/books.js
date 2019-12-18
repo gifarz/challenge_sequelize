@@ -21,13 +21,26 @@ module.exports = function(app) {
 
   /* GET by ID book listing. */
   app.get("/books/:id", function(req, res, next) {
-    model.Book.findOne()
-      .then(books =>
-        res.json({
-          error: false,
-          data: books
-        })
-      )
+    const book_id = req.params.id
+      model.Book.findOne({
+         where: {
+            id : book_id
+            }
+      })
+      .then(books => {
+            if(books){
+                   res.json({
+                      error: false,
+                      data: books
+                  })
+            } else {
+                  res.json({
+                      error: true,
+                      data: "not found"
+                  })
+            }
+      })
+
       .catch(error =>
         res.json({
           error: true,
@@ -105,12 +118,18 @@ module.exports = function(app) {
         id: book_id
       }
     })
-      .then(status =>
+      .then(books => {
+      if(books) {
         res.json({
           error: false,
-          message: "book has been delete."
+          message: "Book has been delete."
         })
-      )
+      } else {
+         res.json({
+            error: true,
+            message: "Book not found"
+         })
+      }})
       .catch(error =>
         res.json({
           error: true,
